@@ -41,6 +41,11 @@ int main(int argc, const char* argv[])
         return 0;
     }
 
+    if (input == &cin) {
+        std::cout << "Welcome to Quickfuck!\n\nPlease enter your code "
+                  << "and submit by pressing Ctrl+D/Ctrl+Z\n"
+                  << "For more information, please run \"" << progName << " --help\"\n\n";
+    }
 
 // just in time compilation is not yet implemented on windows
 #ifdef _WIN32
