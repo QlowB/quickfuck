@@ -6,6 +6,9 @@ EXECUTABLE := qf
 
 all: $(EXECUTABLE)
 
+install: $(EXECUTABLE)
+	install $(EXECUTABLE) /usr/bin/$(EXECUTABLE)
+
 $(EXECUTABLE): $(OBJECTS)
 	$(CXX) $(OBJECTS) -o $@
 
