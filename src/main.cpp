@@ -11,11 +11,11 @@
 
 int main(int argc, const char* argv[])
 {
-	using namespace std;
-	vector<string> args;
+    using namespace std;
+    vector<string> args;
     for (int i = 1; i < argc; i++) {
-		args.push_back(string(argv[i]));
-	}
+        args.push_back(string(argv[i]));
+    }
 
     bool noCompile = false;
     istream* input = &cin;
@@ -25,8 +25,14 @@ int main(int argc, const char* argv[])
             noCompile = true;
         else
             input = new ifstream(args[i].c_str());
-	}
-	
+    }
+
+// just in time compilation is not yet implemented on windows
+#ifdef _WIN32
+    noCompile = true;
+#endif // _WIN32
+
+    
     std::string code;
     {
         stringstream ss;
@@ -45,10 +51,12 @@ int main(int argc, const char* argv[])
     if (noCompile) {
         fastProgram.run(re);
     } else {
+#ifndef _WIN32
         bf::fast::VeryFastProgram vfp(fastProgram);
         vfp.run(2 * 1024 * 1024);
+#endif // _WIN32
     }
-	
-	return 0;
+    
+    return 0;
 }
 

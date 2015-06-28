@@ -6,6 +6,9 @@
 //  Copyright (c) 2015 Winfor. All rights reserved.
 //
 
+#ifndef _WIN32
+
+
 #include "VeryFastProgram.h"
 
 #include <sys/mman.h>
@@ -17,14 +20,13 @@
 
 using namespace bf::fast;
 
-// keep
 
 VeryFastProgram::VeryFastProgram(const bf::fast::Program& prog)
 {
     mappedMemory = 0;
     
 #ifdef __APPLE__
-	mac = true;
+    mac = true;
 #else
     mac = false;
 #endif
@@ -43,6 +45,9 @@ VeryFastProgram::~VeryFastProgram(void)
 
 void VeryFastProgram::addProgram(const fast::Program& prog)
 {
+    unsigned const char init[] = { 0x48, 0x89, 0xFB };
+    addCode(init, sizeof init);
+
     for (int i = 0; i < prog.getNInstructions(); i++) {
         const Instruction* inst = prog.getInstruction(i);
         compile_x86_64(inst);
@@ -286,16 +291,13 @@ void VeryFastProgram::compile_x86_64(const bf::fast::Instruction* inst)
 }
 
 
-
-
-
 void VeryFastProgram::run(size_t memory)
 {
     if (mappedMemory == 0) {
         allocate();
     }
     
-    typedef void (*Subroutine)(void);
+    typedef void (*Subroutine)(void*);
     
     Subroutine routine = (Subroutine) mappedMemory;
     
@@ -304,39 +306,26 @@ void VeryFastProgram::run(size_t memory)
     void* readPtr = (void*) &readchar;
     ::memset(bx_ptr, 0, memory);
     bx_ptr += memory / 2;
-    asm volatile ("movq %0, %%rbx": : "a"(bx_ptr));
-    //asm volatile ("movq %0, %%r9": : "a"(printPtr));
-    //asm volatile ("movq %0, %%r11": : "a"(readPtr));
-    
-    //asm volatile ("movb $67, %r8b");
-    //printchar();
-    
-    //long addr = 0;
-    //long addr2 = reinterpret_cast<long>(&printchar);
-    
-    //asm volatile ("movq %%r9, %0": "=a"(addr));
 
-    routine();
+    // after the call to routine, it is not 
+    // save anymore to use "this". So we copy
+    // it and store it manually on the stack
+    VeryFastProgram* new_this = this;
 
-    // mov eax, 0x2000004
-    // mov rdi, 1
-    // mov rsi, rbx
-    // sub/add rsi, offset
-    // mov rdx, 1
-    // syscall
-    /*asm volatile("movq $0x2000004, %%rax\n"
-    "movq $1, %%rdi\n"
-    "movq %0, %%rsi\n"
-    "movq $1, %%rdx\n"
-    "int $0x80" : : "r"(bx_ptr));*/
+    // we need to save everything because
+    // this call is when shit gets crazy
+    asm volatile ("pushq %%rax" : : "a"(this));
+    asm volatile ("pushq %%rax" : : "a"(bx_ptr));
+    asm volatile ("pushq %%rax" : : "a"(memory));
+    routine(bx_ptr);
+    asm volatile ("popq %%rax" : "=a"(memory));
+    asm volatile ("popq %%rax" : "=a"(bx_ptr));
+    asm volatile ("popq %%rax" : "=a"(new_this));
 
 
-    /*std::cout << (int) bx_ptr[0] << "\n";
-    std::cout << (int) bx_ptr[1] << "\n";
-    std::cout << (int) bx_ptr[2] << "\n";
-    std::cout << (int) bx_ptr[3] << "\n";*/
     bx_ptr -= memory / 2;
     delete[] bx_ptr;
+    ::munmap(new_this->mappedMemory, new_this->code.size());
 }
 
 #include <iostream>
@@ -361,4 +350,5 @@ void VeryFastProgram::addCode(const unsigned char* code, int length)
     }
 }
 
+#endif // _WIN32
 

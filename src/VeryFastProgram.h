@@ -9,6 +9,8 @@
 #ifndef QUICKFUCK_VERYFASTPROGRAM_H_
 #define QUICKFUCK_VERYFASTPROGRAM_H_
 
+#ifndef _WIN32
+
 #include "FastProgram.h"
 
 #include <vector>
@@ -47,6 +49,7 @@ private:
 };
 
 
+#endif // _WIN32
 
 #endif // QUICKFUCK_VERYFASTPROGRAM_H_
 
