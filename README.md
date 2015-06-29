@@ -24,6 +24,6 @@ with an EOF-character (Ctrl+D on most unix-like systems, Ctrl+Z on Windows).
 There are a few things important to note when pushing it to the limit:
 
 The memory is not guaranteed to be aligned in a circular way, i.e. when executing the following program
-<tt> +[>+]</tt> it will probably exit with a segmentation fault. If you need the memory to be aligned in a circular way,
+<tt>+[>+]</tt> it will probably exit with a segmentation fault. If you need the memory to be aligned in a circular way,
 run quickfuck with argument '-i' which will run quickfuck in interpret-only mode.
 However, running quickfuck in this mode is generally a lot slower than otherwise, which is why it is normally better to avoid it.
