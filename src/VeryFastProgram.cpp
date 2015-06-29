@@ -6,10 +6,11 @@
 //  Copyright (c) 2015 Winfor. All rights reserved.
 //
 
-#ifndef _WIN32
-
 
 #include "VeryFastProgram.h"
+
+#ifdef USE_JUST_IN_TIME_COMPILER
+
 
 #include <sys/mman.h>
 #include <sys/types.h>
@@ -350,5 +351,6 @@ void VeryFastProgram::addCode(const unsigned char* code, int length)
     }
 }
 
-#endif // _WIN32
+#endif // USE_JUST_IN_TIME_COMPILER
+
 

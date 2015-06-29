@@ -7,6 +7,7 @@
 
 #include "BfProgram.h"
 #include "FastProgram.h"
+#include "SystemInfo.h"
 #include "VeryFastProgram.h"
 
 void printHelp(void);
@@ -48,9 +49,10 @@ int main(int argc, const char* argv[])
     }
 
 // just in time compilation is not yet implemented on windows
-#ifdef _WIN32
+// or any non x64 systems
+#ifndef USE_JUST_IN_TIME_COMPILER
     noCompile = true;
-#endif // _WIN32
+#endif
 
     
     std::string code;
@@ -71,10 +73,10 @@ int main(int argc, const char* argv[])
     if (noCompile) {
         fastProgram.run(re);
     } else {
-#ifndef _WIN32
+#ifndef USE_JUST_IN_TIME_COMPILER
         bf::fast::VeryFastProgram vfp(fastProgram);
         vfp.run(8 * 1024 * 1024);
-#endif // _WIN32
+#endif
     }
     
     return 0;

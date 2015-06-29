@@ -9,7 +9,9 @@
 #ifndef QUICKFUCK_VERYFASTPROGRAM_H_
 #define QUICKFUCK_VERYFASTPROGRAM_H_
 
-#ifndef _WIN32
+#include "SystemInfo.h"
+
+#ifdef USE_JUST_IN_TIME_COMPILER
 
 #include "FastProgram.h"
 
@@ -49,7 +51,7 @@ private:
 };
 
 
-#endif // _WIN32
+#endif // USE_JUST_IN_TIME_COMPILER
 
 #endif // QUICKFUCK_VERYFASTPROGRAM_H_
 
