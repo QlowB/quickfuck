@@ -1,6 +1,6 @@
 //
 //  Optimizer.h
-//  Brainfucker
+//  Quickfuck
 //
 //  Created by Nicolas Winkler on 30.10.14.
 //  Copyright (c) 2014 Winfor. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  Runtime.cpp
-//  Brainfucker
+//  Quickfuck
 //
 //  Created by Nicolas Winkler on 29.10.14.
 //  Copyright (c) 2014 Winfor. All rights reserved.
@@ -14,7 +14,7 @@ using namespace bf;
 
 RuntimeEnvironment::RuntimeEnvironment(void)
 {
-    memorySize = 2 * 1024 * 1024;
+    memorySize = 4096;
     memoryPointerMask = 0x7FF;
     memory = new char[memorySize];
     memset(memory, 0, memorySize);

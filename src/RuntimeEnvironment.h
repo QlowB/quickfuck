@@ -1,6 +1,6 @@
 //
 //  Runtime.h
-//  Brainfucker
+//  Quickfuck
 //
 //  Created by Nicolas Winkler on 29.10.14.
 //  Copyright (c) 2014 Winfor. All rights reserved.

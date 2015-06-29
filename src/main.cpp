@@ -71,13 +71,16 @@ int main(int argc, const char* argv[])
     bf::RuntimeEnvironment re;
     
     if (noCompile) {
-        fastProgram.run(re);
-    } else {
-#ifndef USE_JUST_IN_TIME_COMPILER
+        std::cout << "hoi!";
+        block.run(re);
+        //fastProgram.run(re);
+    }
+#ifdef USE_JUST_IN_TIME_COMPILER
+    else {
         bf::fast::VeryFastProgram vfp(fastProgram);
         vfp.run(8 * 1024 * 1024);
-#endif
     }
+#endif
     
     return 0;
 }
