@@ -14,7 +14,7 @@ using namespace bf;
 
 RuntimeEnvironment::RuntimeEnvironment(void)
 {
-    memorySize = 4096;
+    memorySize = 2 * 1024 * 1024;
     memoryPointerMask = 0x7FF;
     memory = new char[memorySize];
     memset(memory, 0, memorySize);
