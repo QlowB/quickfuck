@@ -71,7 +71,7 @@ int main(int argc, const char* argv[])
     bf::RuntimeEnvironment re;
     
     if (noCompile) {
-        std::cout << "hoi!";
+        // std::cout << "hoi!";
         block.run(re);
         //fastProgram.run(re);
     }
