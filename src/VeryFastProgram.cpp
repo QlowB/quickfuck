@@ -315,6 +315,7 @@ void VeryFastProgram::run(size_t memory)
 
     // we need to save everything because
     // this call is when shit gets crazy
+    asm volatile ("pushq %%rbx");
     asm volatile ("pushq %%rax" : : "a"(this));
     asm volatile ("pushq %%rax" : : "a"(bx_ptr));
     asm volatile ("pushq %%rax" : : "a"(memory));
@@ -322,6 +323,7 @@ void VeryFastProgram::run(size_t memory)
     asm volatile ("popq %%rax" : "=a"(memory));
     asm volatile ("popq %%rax" : "=a"(bx_ptr));
     asm volatile ("popq %%rax" : "=a"(new_this));
+    asm volatile ("popq %%rbx");
 
 
     bx_ptr -= memory / 2;
