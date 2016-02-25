@@ -13,11 +13,7 @@
 void printHelp(void);
 const char* progName;
 
-const std::string programInfo =
-    std::string("Welcome to Quickfuck!\n\nPlease enter your code ") +
-    "and submit by pressing Ctrl+D/Ctrl+Z\n"
-    "For more information, please run \"" + progName + " --help\"\n\n";
- 
+
 
 int main(int argc, const char* argv[])
 {
@@ -54,6 +50,11 @@ int main(int argc, const char* argv[])
     }
 
     if (input == &cin && qf::stdoutIsTerminal()) {
+        const std::string programInfo =
+            std::string("Welcome to Quickfuck!\n\nPlease enter your code ") +
+            "and submit by pressing Ctrl+D/Ctrl+Z\n"
+            "For more information, please run \"" + progName + " --help\"\n\n";
+ 
         std::cout << programInfo;
     }
 
