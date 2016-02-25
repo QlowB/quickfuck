@@ -13,9 +13,15 @@
 void printHelp(void);
 const char* progName;
 
+const std::string programInfo =
+    std::string("Welcome to Quickfuck!\n\nPlease enter your code ") +
+    "and submit by pressing Ctrl+D/Ctrl+Z\n"
+    "For more information, please run \"" + progName + " --help\"\n\n";
+ 
 
 int main(int argc, const char* argv[])
 {
+    std::cout << "aff\n";
     using namespace std;
     vector<string> args;
     for (int i = 1; i < argc; i++) {
@@ -26,13 +32,18 @@ int main(int argc, const char* argv[])
 
     bool noCompile = false;
     bool help = false;
+    bool circular = false;
     istream* input = &cin;
 
+    std::cout << "helooo\n";
+    
     for (size_t i = 0; i < args.size(); i++) {
-        if (args[i] == "-i")
+        if (args[i] == "-n" || args[i] == "--no-jit")
             noCompile = true;
         else if (args[i] == "-h" || args[i] == "--help")
             help = true;
+        else if (args[i] == "-c" || args[i] == "--circular")
+            circular = true;
         else
             input = new ifstream(args[i].c_str());
     }
@@ -42,10 +53,8 @@ int main(int argc, const char* argv[])
         return 0;
     }
 
-    if (input == &cin) {
-        std::cout << "Welcome to Quickfuck!\n\nPlease enter your code "
-                  << "and submit by pressing Ctrl+D/Ctrl+Z\n"
-                  << "For more information, please run \"" << progName << " --help\"\n\n";
+    if (input == &cin && qf::stdoutIsTerminal()) {
+        std::cout << programInfo;
     }
 
 // just in time compilation is not yet implemented on windows
@@ -71,7 +80,6 @@ int main(int argc, const char* argv[])
     bf::RuntimeEnvironment re;
     
     if (noCompile) {
-        // std::cout << "hoi!";
         block.run(re);
         //fastProgram.run(re);
     }
@@ -91,9 +99,14 @@ void printHelp(void)
     std::cout << "Quickfuck is an optimizing interpreter for the esoteric "
     << "programming language brainfuck.\n\n"
     << "\tUsage: " << progName << " filename [-i] [-h]\n"
-    << "\tArguments:\n\t\t-i runs the brainfuck program without just in time compilation "
-    << "(On Windows, this is always the case).\n"
-    << "\t\t-h/--help displays this message\n";
+    << "\tArguments:\n\t\t"
+        << "\t\t-h/--help displays this message\n"
+
+        << "-n/--no-jit runs the brainfuck program without "
+        << "just in time compilation (On non-POSIX systems (mainly Windows), "
+        << "this is always the case).\n"
+    
+        << "\t\t-c/--circular enforces a circular data tape";
 }
 
 

@@ -12,6 +12,31 @@
 
 #endif // x64
 
+#ifdef _WIN32
+#include <io.h>
+#include <stdio.h>
+
+namespace qf {
+    inline bool stdoutIsTerminal(void)
+    {
+        return _isatty(_fileno(stdout));
+    }
+}
+
+#else // probably POSIX
+
+#include <unistd.h>
+#include <stdio.h>
+
+namespace qf {
+    inline bool stdoutIsTerminal(void)
+    {
+        return isatty(fileno(stdout));
+    }
+}
+
+
+#endif
 
 
 #endif // SYSTEMINFO_H_
