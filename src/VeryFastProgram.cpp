@@ -311,7 +311,7 @@ void VeryFastProgram::run(size_t memory)
     // after the call to routine, it is not 
     // save anymore to use "this". So we copy
     // it and store it manually on the stack
-    VeryFastProgram* new_this = this;
+    VeryFastProgram* volatile new_this = this;
 
     // we need to save everything because
     // this call is when shit gets crazy
