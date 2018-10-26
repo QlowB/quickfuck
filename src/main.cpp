@@ -17,7 +17,6 @@ const char* progName;
 
 int main(int argc, const char* argv[])
 {
-    std::cout << "aff\n";
     using namespace std;
     vector<string> args;
     for (int i = 1; i < argc; i++) {
@@ -31,8 +30,6 @@ int main(int argc, const char* argv[])
     bool circular = false;
     istream* input = &cin;
 
-    std::cout << "helooo\n";
-    
     for (size_t i = 0; i < args.size(); i++) {
         if (args[i] == "-n" || args[i] == "--no-jit")
             noCompile = true;
